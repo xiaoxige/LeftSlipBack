@@ -1,9 +1,11 @@
 package cn.xiaoxige.leftslipbacklibrary.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +32,7 @@ public class LeftSlipAgentLayout extends FrameLayout {
     boolean mIsStartLegitimate = false;
     private int mWidth;
 
+
     private ILeftSlipBack mLeftSlipBack;
 
     public LeftSlipAgentLayout(@NonNull Context context, ILeftSlipBack leftSlipBack) {
@@ -40,7 +43,6 @@ public class LeftSlipAgentLayout extends FrameLayout {
 
         mDragHelp = ViewDragHelper.create(this, 1.0f, new ViewDragHelperCallBack());
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-
     }
 
     @CallSuper
@@ -75,16 +77,25 @@ public class LeftSlipAgentLayout extends FrameLayout {
         }
 
         @Override
-        public void onViewPositionChanged(View changedView, int left, int top,
-                                          int dx, int dy) {
-
-        }
-
-        @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
-
+            int left = mContentView.getLeft();
+            if (left > mWidth >> 1) {
+                handlerFinish();
+            } else {
+                handlerCancle();
+            }
         }
 
+    }
+
+    @Override
+    public void computeScroll() {
+        if (mDragHelp.continueSettling(true)) {
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+        if (mContext != null && mContentView.getLeft() >= mWidth) {
+            ((Activity) mContext).finish();
+        }
     }
 
 
@@ -125,5 +136,18 @@ public class LeftSlipAgentLayout extends FrameLayout {
             e.printStackTrace();
         }
         return mLeftSlipBack.isLeftSlipBackOpen() || super.onTouchEvent(event);
+    }
+
+
+    private void handlerCancle() {
+        if (mDragHelp.smoothSlideViewTo(mContentView, 0, 0)) {
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
+    private void handlerFinish() {
+        if (mDragHelp.smoothSlideViewTo(mContentView, mWidth, 0)) {
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
     }
 }
