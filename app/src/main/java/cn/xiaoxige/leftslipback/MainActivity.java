@@ -22,4 +22,9 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    public boolean isLeftSlipBackOpen() {
+        return false;
+    }
 }

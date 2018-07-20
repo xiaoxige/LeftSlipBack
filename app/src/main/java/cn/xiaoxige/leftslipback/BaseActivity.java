@@ -24,7 +24,7 @@ public class BaseActivity extends Activity implements ILeftSlipBack {
     }
 
     @Override
-    public boolean isOpen() {
+    public boolean isLeftSlipBackOpen() {
         return true;
     }
 

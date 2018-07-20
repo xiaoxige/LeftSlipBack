@@ -12,7 +12,7 @@ public interface ILeftSlipBack {
      *
      * @return
      */
-    boolean isOpen();
+    boolean isLeftSlipBackOpen();
 
     /**
      * Speed of progress
