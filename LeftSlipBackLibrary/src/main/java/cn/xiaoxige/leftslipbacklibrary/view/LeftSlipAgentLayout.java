@@ -77,7 +77,18 @@ public class LeftSlipAgentLayout extends FrameLayout {
         }
 
         @Override
+        public void onViewPositionChanged(View changedView, int left, int top,
+                                          int dx, int dy) {
+            handlerProgress(left);
+        }
+
+
+        @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            if (xvel > 0) {
+                handlerFinish();
+                return;
+            }
             int left = mContentView.getLeft();
             if (left > mWidth >> 1) {
                 handlerFinish();
@@ -138,6 +149,9 @@ public class LeftSlipAgentLayout extends FrameLayout {
         return mLeftSlipBack.isLeftSlipBackOpen() || super.onTouchEvent(event);
     }
 
+    private void handlerProgress(int left) {
+        mLeftSlipBack.leftSlipProgresss((float) left / mWidth);
+    }
 
     private void handlerCancle() {
         if (mDragHelp.smoothSlideViewTo(mContentView, 0, 0)) {
