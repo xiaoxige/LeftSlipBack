@@ -27,6 +27,44 @@ public class SecondActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("TAG", "SecondActivity onResume()");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("TAG", "SecondActivity onStart()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("TAG", "SecondActivity onStop()");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("TAG", "SecondActivity onRestart()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("TAG", "SecondActivity onPause()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("TAG", "SecondActivity onDestroy()");
+    }
+
+
     @Override
     public void leftSlipProgresss(float progress) {
         super.leftSlipProgresss(progress);
