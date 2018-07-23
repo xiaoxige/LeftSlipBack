@@ -50,6 +50,7 @@ public class LeftSlipAgentLayout extends FrameLayout {
     public void addView(View child, ViewGroup.LayoutParams params) {
         super.addView(child, params);
         mContentView = child;
+        mContentView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorDefaultBg));
     }
 
     @Override
