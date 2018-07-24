@@ -63,7 +63,7 @@ public class LeftSlipAgentLayout extends FrameLayout {
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            return true;
+            return child == mContentView;
         }
 
         @Override
@@ -86,7 +86,8 @@ public class LeftSlipAgentLayout extends FrameLayout {
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
-            if (xvel > 0) {
+
+            if ((mTouchX - mContentView.getLeft()) < mTouchSlop && xvel > 0) {
                 handlerFinish();
                 return;
             }
@@ -110,9 +111,12 @@ public class LeftSlipAgentLayout extends FrameLayout {
         }
     }
 
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            mTouchX = ev.getX();
+            mIsStartLegitimate = false;
+        }
         return mLeftSlipBack.isLeftSlipBackOpen() ? mDragHelp.shouldInterceptTouchEvent(ev) : super.onInterceptTouchEvent(ev);
     }
 
@@ -121,8 +125,7 @@ public class LeftSlipAgentLayout extends FrameLayout {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mTouchX = event.getRawX();
-                mIsStartLegitimate = false;
+
                 break;
             case MotionEvent.ACTION_MOVE:
 
@@ -131,7 +134,7 @@ public class LeftSlipAgentLayout extends FrameLayout {
                 }
 
                 //noinspection ConstantConditions
-                mIsStartLegitimate = mIsStartLegitimate || Math.abs(event.getRawX() - mTouchX) > mTouchSlop && Math.abs(mTouchX - mContentView.getLeft()) < mTouchSlop;
+                mIsStartLegitimate = mIsStartLegitimate || Math.abs(event.getX() - mTouchX) > mTouchSlop && Math.abs(mTouchX - mContentView.getLeft()) < mTouchSlop;
 
                 if (!mIsStartLegitimate) {
                     return super.onTouchEvent(event);
